@@ -1,0 +1,6 @@
+vF_purple
+cold
+hot
+vF_blue
+vF_green
+pinprick
