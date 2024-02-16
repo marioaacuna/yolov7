@@ -4,15 +4,14 @@ from get_conda_env import get_conda_env_path
 
 # Define variables for the command parameters
 weights = os.path.join('C:/Users/acuna/Repositories/yolov7/runs/train/yolov7-e6-custom/weights/best.pt')
-conf = 0.70
-img_size = 704
-source_path = 'D:/_test_YOLOv7/eval_vids/'
-video_name = 'CNO_injection_685.mp4'
-source = os.path.join(source_path,video_name) 
-
-# read classes
-# Define the path to your classes.txt file
-classes_file_path = './data/labels/classes.txt'
+conf = 0.65     # This is the confidence threshold - constant do not modify
+img_size = 704 # This is the size of the images that the model was trained on so it's a constant
+source_path = 'D:/_test_YOLOv7/eval_vids/' # This is the path to the video file
+video_name = 'CNO_injection_685.mp4' # This is the name of the video file
+source = os.path.join(source_path,video_name) # This is the path to the video file
+working_directory = 'C:/Users/acuna/Repositories/yolov7/' # This is where 'detect.py' is located
+env_name = 'env_yolo7' # Conda environment name
+classes_file_path = './data/labels/classes.txt' # This is the path to the classes file
 
 # Read the classes from the file and strip any whitespace
 with open(classes_file_path, 'r') as file:
@@ -20,7 +19,7 @@ with open(classes_file_path, 'r') as file:
 
 class_indices = ','.join(map(str, classes))  # This converts integers to strings and then joins them
 # Define the path to the Python interpreter in the env_Yolo7 Conda environment
-env_name = 'env_yolo7'
+
 env_path = get_conda_env_path(env_name)
 if env_path:
     env_python_path = os.path.join(env_path, 'python')
@@ -28,11 +27,12 @@ if env_path:
 else:
     print(f'Conda environment {env_name} not found.')
     KeyError( f'Conda environment {env_name} not found.')
-# Set the working directory to where 'detect.py' is located
-working_directory = 'C:/Users/acuna/Repositories/yolov7/'
+
 
 # Project folder
 project_folder = os.path.join(source_path, 'runs/detect')
+if not os.path.exists(project_folder):
+    os.makedirs(project_folder)
 
 # Construct the command with variables
 args = [
