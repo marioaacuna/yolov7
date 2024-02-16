@@ -48,6 +48,8 @@ args = [
     '--save-conf'
 ]
 
+# Let user know we will run it know
+print('Running detection...')
 # Execute the subprocess with the constructed arguments
 process = subprocess.Popen(args, cwd=working_directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
