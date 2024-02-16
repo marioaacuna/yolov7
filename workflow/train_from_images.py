@@ -1,14 +1,25 @@
-#from yolov7 import  train_aux
-#from train_aux import train_aux
 import subprocess
+import os
+from get_conda_env import get_conda_env_path
 
 # Set the working directory to the directory containing train_aux.py
 working_directory = f'C:/Users/acuna/Repositories/yolov7'
 
+# Define the path to the Python interpreter in the env_Yolo7 Conda environment
+# Adjust this path to the actual location of your Conda environment's Python interpreter
+
+env_name = 'env_yolo7'
+env_path = get_conda_env_path(env_name)
+if env_path:
+    env_python_path = os.path.join(env_path, 'python')
+    #print(f'Python path for {env_name}: {env_python_path}')
+else:
+    print(f'Conda environment {env_name} not found.')
+    KeyError( f'Conda environment {env_name} not found.')
 
 # Set training variables
 workers = 8
-device = 0  # Updated to device 0 as per your command
+device = 0  #
 batch_size = 16
 data = 'data/custom_01.yaml'
 img_size = 704  # Updated to the sizes given in your command
@@ -18,9 +29,13 @@ name = 'yolov7-e6-custom'  # Updated to match the name in your command
 hyp = 'data/hyp.scratch.p6_custom.yaml'  # Updated to the new hyp file
 epochs = 100  # Updated to the number of epochs you want to train for
 
+
+############################################################################################################
+# Train the model
+# Then run the training script
+
 # Command line arguments as a list of strings
-args = [
-    'conda', 'run', '-n', 'env_Yolo7', 'python', 'train_aux.py',
+args = [env_python_path, 'train_aux.py',
     '--workers', str(workers),
     '--device', str(device),
     '--batch-size', str(batch_size),
@@ -32,42 +47,17 @@ args = [
     '--hyp', hyp,
     '--epochs', str(epochs)
 ]
+# Execute the subprocess with the constructed arguments
+process = subprocess.Popen(args, cwd=working_directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
-# Run the train_aux.py script with the specified arguments in the env_Yolo7 conda environment
-subprocess.run(args, cwd=working_directory)
+# Wait for the command to complete and capture the output
+stdout, stderr = process.communicate()
+
+# Print the outputs
+print(stdout)
+print(stderr)
+
+# decorate the output with stars
+print('*' * 80)
 print('All done with training!')
 
-
-
-'''
-python train_aux.py --workers 8 --device 0 --batch-size 16 --data data/custom_01.yaml --img 1280 720 --cfg cfg/training/yolov7-e6-custom.yaml --weights 'models/yolov7-e6_training.pt' --name yolov7-w6-custom --hyp data/hyp.scratch.p6_custom.yaml
-'''
-
-''' From the bash script create a python function:
-python export.py --weights yolov7-tiny.pt --grid --end2end --simplify \
-        --topk-all 100 --iou-thres 0.65 --conf-thres 0.35 --img-size 640 640 --max-wh 640
-        '''
-
-""" import export
-
-export_weights = 'yolov7-e6-custom.pt'
-grid = True
-end2end = True
-simplify = True
-topk_all = 100
-iou_thres = 0.65
-conf_thres = 0.35
-#img_size = [640, 640]
-max_wh = 640
-
-export.export(export_weights,
-              grid, 
-              end2end, 
-              simplify, 
-              topk_all, 
-              iou_thres, 
-              conf_thres, 
-              img_size, 
-              max_wh)
-
- """
