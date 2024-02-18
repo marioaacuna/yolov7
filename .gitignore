@@ -20,6 +20,7 @@
 *.data
 *.json
 *.cfg
+*.asv
 !setup.cfg
 !cfg/yolov3*.cfg
 
