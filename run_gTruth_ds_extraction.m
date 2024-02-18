@@ -8,6 +8,7 @@ global GC
 %% set the version
 version = 'X';
 rootpath = GC.repo_path; 
+running_anx_cohort = true; % this is to get the data form the anxiety and sort it 
 % if ispc
 %     root_path = 'C:\Users\acuna\OneDrive - Universitaet Bern\Coding_playground\Anna_playground\';
 % else
@@ -25,7 +26,12 @@ n_files = length(files);
 
 % Load the GT
 % load(fullfile(gt_path, ['gTruth_', num2str(i), '.mat']));
-load(fullfile(gt_path, ['gTruth_conc_2.mat']));
+disp('## Loading GT ## ')
+if ~running_anx_cohort
+    load(fullfile(gt_path, ['gTruth_conc_2.mat'])); % pain cohort training labels
+else
+    load(fullfile(gt_path, ['gTruth_conc_anxiety.mat'])); % anxiety cohort training labels
+end
 % Set where to save the images
 write_loc = fullfile(gt_path, 'Yolov7', 'images');
 if ~exist(write_loc, 'dir')
@@ -44,7 +50,7 @@ if ~exist(labels_folder, 'dir')
 end
 % crete the labels
 
-class_names = {'vF_purple', 'cold', 'hot', 'vF_blue', 'vF_green', 'pinprick'};
+class_names = {'vF_purple', 'cold', 'hot', 'vF_blue', 'vF_green', 'pinprick', 'vF_blue_anx'};
 fileID = fopen(fullfile(labels_folder,'classes.txt'),'w');
 fprintf(fileID,'%s\n', class_names{:});
 fclose(fileID);
@@ -52,6 +58,7 @@ fclose(fileID);
 
 %%
 % Iterate over each entry in the boxLabelDatastore
+L = [];
 for i = 1:size(bxds.LabelData, 1)
     % Extract the file name and use it to name the label file
     [~, name, ~] = fileparts(imds.Files{i});
@@ -66,7 +73,11 @@ for i = 1:size(bxds.LabelData, 1)
     j = i;
     % for j = 1:size(bboxes, 1)
         % Find the index of the current label in class_names
-        classIndex = find(strcmp(class_names, char(labels)));
+        classIndex = find(strcmp(class_names, char(labels(1))));
+        % convert blue to blue_anx
+        if classIndex == 4 && running_anx_cohort
+            classIndex = find(strcmp(class_names,'vF_blue_anx'));
+        end
         
         % Convert bounding box from [x y width height] to the desired format
         % Here, you might need to adjust the format based on your specific requirements
@@ -84,4 +95,5 @@ for i = 1:size(bxds.LabelData, 1)
     
     % Close the file
     fclose(fileID);
+    L = [L;classIndex-1];
 end

@@ -3,7 +3,7 @@ import os
 from get_conda_env import get_conda_env_path
 
 # Set the working directory to the directory containing train_aux.py
-working_directory = f'C:/Users/acuna/Repositories/yolov7'
+working_directory = f'C:/Users/acuna/Repositories/yolov7/'
 
 # Define the path to the Python interpreter in the env_Yolo7 Conda environment
 # Adjust this path to the actual location of your Conda environment's Python interpreter
@@ -21,13 +21,15 @@ else:
 workers = 8
 device = 0  #
 batch_size = 16
-data = 'data/custom_01.yaml'
+data = 'D:/YOLOv7_training/training_configs.yaml'
 img_size = 704  # Updated to the sizes given in your command
-cfg = 'cfg/training/yolov7-e6-custom.yaml'
-weights = 'models/yolov7-e6_training.pt'
-name = 'yolov7-e6-custom'  # Updated to match the name in your command
-hyp = 'data/hyp.scratch.p6_custom.yaml'  # Updated to the new hyp file
+cfg = './cfg/training/yolov7-e6-custom.yaml'
+weights = './models/yolov7-e6_training.pt'
+#name = 'yolov7-e6-custom'  # Updated to match the name in your command
+hyp = './data/hyp.scratch.p6_custom.yaml'  # Updated to the new hyp file
 epochs = 100  # Updated to the number of epochs you want to train for
+project_folder = 'D:/YOLOv7_training'  # Updated to the project folder you want to use
+name = 'pain_and_anxiety'
 
 
 ############################################################################################################
@@ -45,10 +47,15 @@ args = [env_python_path, 'train_aux.py',
     '--weights', weights,
     '--name', name,
     '--hyp', hyp,
-    '--epochs', str(epochs)
+    '--epochs', str(epochs),
+    '--project', project_folder
 ]
 # Execute the subprocess with the constructed arguments
+print('Running training...')
 process = subprocess.Popen(args, cwd=working_directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+# Be aware of the cache in the training folder, if your training is not working, try to delete the cache folder in the training folder
+# python train_aux.py --workers 8 --device 0 --batch-size 16 --data D:/YOLOv7_training/training_configs.yaml --img 704 --cfg cfg/training/yolov7-e6-custom.yaml --weights models/yolov7-e6_training.pt --name pain_and_anxiety --hyp data/hyp.scratch.p6_custom.yaml --epochs 100 --project, D:/YOLOv7_training
+
 
 # Wait for the command to complete and capture the output
 stdout, stderr = process.communicate()
@@ -60,4 +67,3 @@ print(stderr)
 # decorate the output with stars
 print('*' * 80)
 print('All done with training!')
-
