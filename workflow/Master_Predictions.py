@@ -84,8 +84,8 @@ def main():
                                      output_csv_path=output_csv_path, 
                                      min_consecutive_frames = min_consecutive_frames,
                                      min_gap_between_blocks=min_gap_between_blocks,
-                                     withdraw_frames=withdraw_frames,
-                                     frame_rate=frame_rate)
+                                     withdraw_frames=withdraw_frames
+                                     )
 
 if __name__ == '__main__':
     main()
