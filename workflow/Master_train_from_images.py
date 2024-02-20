@@ -1,6 +1,9 @@
+# in case to be run from the command line, the following command should be used:
+#! python train_aux.py --workers 8 --device 0 --batch-size 16 --data D:/YOLOv7_training/training_configs.yaml --img 704 --cfg cfg/training/yolov7-e6-custom.yaml --weights models/yolov7-e6_training.pt --name pain_and_anxiety --hyp data/hyp.scratch.p6_custom.yaml --epochs 100 --project, D:/YOLOv7_training
+
 import subprocess
 import os
-from get_conda_env import get_conda_env_path
+from Utilities.get_conda_env import get_conda_env_path
 
 # Set the working directory to the directory containing train_aux.py
 working_directory = f'C:/Users/acuna/Repositories/yolov7/'
@@ -54,7 +57,7 @@ args = [env_python_path, 'train_aux.py',
 print('Running training...')
 process = subprocess.Popen(args, cwd=working_directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 # Be aware of the cache in the training folder, if your training is not working, try to delete the cache folder in the training folder
-# python train_aux.py --workers 8 --device 0 --batch-size 16 --data D:/YOLOv7_training/training_configs.yaml --img 704 --cfg cfg/training/yolov7-e6-custom.yaml --weights models/yolov7-e6_training.pt --name pain_and_anxiety --hyp data/hyp.scratch.p6_custom.yaml --epochs 100 --project, D:/YOLOv7_training
+# 
 
 
 # Wait for the command to complete and capture the output

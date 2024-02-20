@@ -1,10 +1,14 @@
+
+# Alternatively, you can run the following command in the terminal:
+# python detect.py --weights D:\YOLOv7_training\pain_and_anxiety\weights\best.pt --conf 0.5 --img-size 704 --source D:/_test_YOLOv7/eval_vids/CNO_injection_685.mp4 --device 0 --save-txt --save-conf --name pain_and_anx
+
 import subprocess
 import os
-from get_conda_env import get_conda_env_path
+from workflow.Utilities.get_conda_env import get_conda_env_path
 
 # Define variables for the command parameters
 weights = os.path.join('C:/Users/acuna/Repositories/yolov7/runs/train/yolov7-e6-custom/weights/best.pt')
-conf = 0.65     # This is the confidence threshold - constant do not modify
+conf = 0.5     # This is the confidence threshold - constant do not modify
 img_size = 704 # This is the size of the images that the model was trained on so it's a constant
 source_path = 'D:/_test_YOLOv7/eval_vids/' # This is the path to the video file
 video_name = 'CNO_injection_685.mp4' # This is the name of the video file

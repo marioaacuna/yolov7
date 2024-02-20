@@ -1,21 +1,24 @@
 # script_02__run_predictions.py
-
+import torch
 import subprocess
 import os
-from get_conda_env import get_conda_env_path  # Ensure this module is accessible
+from Utilities.get_conda_env import get_conda_env_path  # Ensure this module is accessible
 
 def run_detection(video_name, project_folder, 
                   source_path='D:/_test_YOLOv7/eval_vids/', 
                   weights='C:/Users/acuna/Repositories/yolov7/runs/train/yolov7-e6-custom/weights/best.pt', 
-                  conf=0.65, 
+                  conf=0.5, 
                   img_size=704, 
                   env_name='env_yolo7', 
                   device='0'):
     """Run detection on a video file using YOLOv7."""
     # Construct the source path to the video file
     source = os.path.join(source_path, video_name)
-    working_directory = 'C:/Users/acuna/Repositories/yolov7/'  # Location of detect.py
-
+    # working directory must one folder upstream to the current directory of this script
+    working_directory = os.getcwd() # location of detect.py
+    
+    # working_directory = 'C:/Users/acuna/Repositories/yolov7/'  # Location of detect.py
+    
     # Attempt to get the Conda environment's Python path
     env_path = get_conda_env_path(env_name)
     if not env_path:
@@ -26,6 +29,10 @@ def run_detection(video_name, project_folder,
     # Project folder for output
     #project_folder = os.path.join(source_path, 'runs/detect')
     #os.makedirs(project_folder, exist_ok=True)  # Ensure the directory exists
+    # check if cuda is installed if not, then device = 'cpu'
+
+    if not torch.cuda.is_available():
+        device = 'cpu'
 
     # Construct the command with variables
     args = [
@@ -41,7 +48,7 @@ def run_detection(video_name, project_folder,
         '--save-conf'
     ]
 
-    print('Running detection...')
+    print('Running detection, be patient...')
     # Execute the subprocess with the constructed arguments
     process = subprocess.Popen(args, cwd=working_directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 

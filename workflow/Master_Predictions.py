@@ -1,6 +1,6 @@
 import os
-from script_02__run_predictions import run_detection
-from script_03__process_withdrawal_frames import process_detection_blocks
+from functions.script_02__run_predictions import run_detection
+from functions.script_03__process_withdrawal_frames import process_detection_blocks
 import tkinter as tk
 from tkinter import filedialog
 
@@ -11,12 +11,35 @@ def main():
         root.withdraw()  # Hide the main window.
         folder_path = filedialog.askdirectory()  # Show the dialog and return the selected folder path.
         return folder_path
+    
+
+    # Ask the user to select the file containing the weights with a title
+    def select_weights_file():
+        root = tk.Tk()
+        root.withdraw()
+        file_path = filedialog.askopenfilename()
+        return file_path
+    
+    # Get the weights file
+    print('Select the weights file to use for detection.')
+    weights_file = select_weights_file()
+    print(f"Selected weights file: {weights_file}")
 
     # Get video folder
+    print('Select the folder containing the videos to process.')
     video_folder = select_folder()
     print(f"Selected folder: {video_folder}")
+
+    # Get the classes for this project located in the same folder as the weights file
+    classes_file_path = os.path.join(os.path.dirname(weights_file), 'classes.txt')
+
     # Master folder for all outputs
-    master_output_folder = 'D:/master_output_YOLO_v7_folder'
+    # check if it's a macOS or windows path
+    if os.name == 'posix':
+        master_output_folder = '/Users/Shared/master_output_YOLO_v7_folder'
+    else:
+        master_output_folder = 'D:/master_output_YOLO_v7_folder'
+
     os.makedirs(master_output_folder, exist_ok=True)
 
     # Parameters for processing detection blocks
@@ -41,7 +64,7 @@ def main():
                 print(f"Labels folder already exists for {video_name}. Skipping detection.")
                 continue
             
-            classes_file_path = 'C:/Users/acuna/Repositories/yolov7/classes.txt'
+            # Define the output CSV path
             output_csv_path = os.path.join(project_folder, 'blocks_with_withdrawal_frames.csv')
             
              
@@ -50,7 +73,8 @@ def main():
             print(f"Running detection on {video_name}...")
             run_detection(video_name=video_name, 
                           source_path=video_folder, 
-                          project_folder=project_folder, 
+                          project_folder=project_folder,
+                          weights=weights_file, 
                           device='0')  # Add other parameters as needed
 
             # Process the detection blocks

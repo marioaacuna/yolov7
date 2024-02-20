@@ -4,13 +4,12 @@ import os
 import glob
 import csv
 
-def process_detection_blocks(labels_folder, classes_file_path, frame_rate=30, min_consecutive_frames=3, min_gap_between_blocks=600, withdraw_frames=2, output_csv_path='blocks_with_withdrawal_frames.csv'):
+def process_detection_blocks(labels_folder, classes_file_path, min_consecutive_frames=3, min_gap_between_blocks=600, withdraw_frames=2, output_csv_path='blocks_with_withdrawal_frames.csv'):
     """
     Processes detection blocks to identify withdrawal frames.
     
     :param labels_folder: Directory containing detection label files.
     :param classes_file_path: Path to the file containing class names.
-    :param frame_rate: Frame rate of the videos.
     :param min_consecutive_frames: Minimum number of consecutive frames for a valid block.
     :param min_gap_between_blocks: Minimum gap between blocks, in frames.
     :param withdraw_frames: Number of frames before the last detection to mark as withdrawal.

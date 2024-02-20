@@ -3,9 +3,9 @@ import os
 import glob
 
 # Define the paths
-labels_folder = 'D:/_test_YOLOv7/eval_vids/runs/detect/exp/labels'
+labels_folder = 'D:/_test_YOLOv7/runs/detect/pain_anxiety/labels'
 video_folder = 'D:/_test_YOLOv7/eval_vids'
-classes_file_path = 'C:/Users/acuna/Repositories/yolov7/classes.txt'
+classes_file_path = 'D:/stimulus_labeler/Yolov7/labels/classes.txt'
 
 # Read class names from classes.txt
 with open(classes_file_path, 'r') as file:

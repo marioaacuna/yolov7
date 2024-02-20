@@ -3,13 +3,13 @@ import glob
 import csv
 
 # Constants
-labels_folder = 'D:/_test_YOLOv7/eval_vids/runs/detect/exp/labels'
+labels_folder = 'D:/_test_YOLOv7/runs/detect/pain_anxiety/labels'
 frame_rate = 30
-min_consecutive_frames = frame_rate * 0.10  # 1 second worth of frames
+min_consecutive_frames =1# frame_rate * 0.10  # 1 second worth of frames
 min_gap_between_blocks = frame_rate * 20  # 20 seconds worth of frames
 withdraw_frames = int(frame_rate * 0.07)  # 500 ms worth of frames
-output_csv_path = 'blocks_with_withdrawal_frames.csv'
-classes_file_path = 'C:/Users/acuna/Repositories/yolov7/classes.txt'
+output_csv_path = 'D:/_test_YOLOv7/runs/detect/pain_anxiety/blocks_with_withdrawal_frames.csv'
+classes_file_path = 'D:/stimulus_labeler/Yolov7/labels/classes.txt'
 
 # Helper functions
 def extract_frame_number(filename):
