@@ -21,7 +21,24 @@ def process_detection_blocks(labels_folder, classes_file_path, min_consecutive_f
 
     def read_detections(file_path):
         with open(file_path, 'r') as f:
-            return int(f.readline().strip().split()[0])
+            # read the row with max confidence (6th column)
+            lines = f.readlines()
+            # check if lines > 1 
+
+            max_confidence = 0
+            for line in lines:
+                confidence = float(line.split()[5])
+                if confidence > max_confidence:
+                    max_confidence = confidence
+                    max_confidence_line = line
+            
+            if len(lines) > 1:
+                print(max_confidence_line)
+                #exit()
+
+            return int(max_confidence_line.strip().split()[0])
+       
+            
 
     # Read class names from classes.txt
     with open(classes_file_path, 'r') as f:
@@ -72,6 +89,15 @@ def process_detection_blocks(labels_folder, classes_file_path, min_consecutive_f
 
 if __name__ == '__main__':
     # Example usage
-    labels_folder = 'path/to/labels'
-    classes_file_path = 'path/to/classes.txt'
-    process_detection_blocks(labels_folder, classes_file_path)
+    labels_folder = 'H:/Mario/YOLOv7_postdetection/CNO_injection_548/labels'
+    classes_file_path = 'H:/YOLO_v7_weights/classes.txt'
+    frame_rate = 30
+    min_consecutive_frames = frame_rate * 0.10  # 0.1 second worth of frames
+    min_gap_between_blocks = frame_rate * 20  # 20 seconds worth of frames
+    withdraw_frames = int(frame_rate * 0.07)  # 70 ms before end of block
+
+    process_detection_blocks(labels_folder, 
+                             classes_file_path,
+                             min_consecutive_frames,
+                             min_gap_between_blocks,
+                             withdraw_frames)
