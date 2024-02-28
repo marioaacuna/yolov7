@@ -32,10 +32,10 @@ def process_detection_blocks(labels_folder, classes_file_path, min_consecutive_f
                     max_confidence = confidence
                     max_confidence_line = line
             
-            if len(lines) > 1:
-                print(max_confidence_line)
-                #exit()
-
+            # debug: if filepath == 'H:/Mario/YOLOv7_postdetection/CNO_injection_548/labels\CNO_injection_548_98562.txt' print()
+            if file_path == 'H:/Mario/YOLOv7_postdetection/CNO_injection_548/labels\CNO_injection_548_22660.txt':
+                print('')   
+                         # 
             return int(max_confidence_line.strip().split()[0])
        
             
@@ -54,7 +54,7 @@ def process_detection_blocks(labels_folder, classes_file_path, min_consecutive_f
         if label not in blocks:
             blocks[label] = []
         
-        if blocks[label] and frame_number - blocks[label][-1][-1] <= 1:
+        if blocks[label] and frame_number - blocks[label][-1][-1] <= 5:
             blocks[label][-1].append(frame_number)
         else:
             if not blocks[label] or frame_number - blocks[label][-1][-1] >= min_gap_between_blocks:
@@ -92,7 +92,7 @@ if __name__ == '__main__':
     labels_folder = 'H:/Mario/YOLOv7_postdetection/CNO_injection_548/labels'
     classes_file_path = 'H:/YOLO_v7_weights/classes.txt'
     frame_rate = 30
-    min_consecutive_frames = frame_rate * 0.10  # 0.1 second worth of frames
+    min_consecutive_frames = frame_rate * 0.4  # 0.4 second worth of frames
     min_gap_between_blocks = frame_rate * 20  # 20 seconds worth of frames
     withdraw_frames = int(frame_rate * 0.07)  # 70 ms before end of block
 
