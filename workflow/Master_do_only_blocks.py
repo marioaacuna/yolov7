@@ -1,5 +1,4 @@
 import os
-from functions.script_02__run_predictions import run_detection
 from functions.RUN_get_withdrawal_blocks import process_detection_blocks
 import tkinter as tk
 from tkinter import filedialog
@@ -45,8 +44,8 @@ def main():
     # Parameters for processing detection blocks
     # set variables for the detection
     frame_rate = 30
-    min_consecutive_frames = 12 # 12 works well ; frame_rate * 0.10  # 0.1 second worth of frames
-    min_gap_between_blocks = frame_rate * 20  # 20 seconds worth of frames - 600 frames (at 30hz) works well
+    min_consecutive_frames = frame_rate * 0.10  # 0.1 second worth of frames
+    min_gap_between_blocks = frame_rate * 20  # 20 seconds worth of frames
     withdraw_frames = int(frame_rate * 0.07)  # 70 ms before end of block
 
     # Iterate through the videos in the provided folder
@@ -70,13 +69,6 @@ def main():
              
             # Run detection on the video
             print(f"\n{'*'*50}\n")
-            print(f"Running detection on {video_name}...")
-            run_detection(video_name=video_name, 
-                          source_path=video_folder, 
-                          project_folder=project_folder,
-                          weights=weights_file, 
-                          device='0')  # Add other parameters as needed
-
             # Process the detection blocks
             print(f"Processing detection blocks for {video_name}...")
             process_detection_blocks(labels_folder=labels_folder, 

@@ -161,7 +161,11 @@ def process_detection_blocks(labels_folder, classes_file_path, min_consecutive_f
     corrected_label_frame_pairs = correct_consecutive_glitches_with_removal(label_frame_pairs, gap_threshold=min_gap_between_blocks)
 
     # Process the corrected label-frame pairs into blocks
-    output_rows = process_blocks(corrected_label_frame_pairs, min_consecutive_frames, withdraw_frames, min_gap_between_blocks, classes_file_path)
+    output_rows = process_blocks(corrected_label_frame_pairs, 
+                                 min_consecutive_frames=min_consecutive_frames,
+                                  withdraw_frames=withdraw_frames, 
+                                  min_gap_between_blocks=min_gap_between_blocks, 
+                                  classes_file_path=classes_file_path)
 
     # Write to CSV
     with open(output_csv_path, 'w', newline='') as csvfile:
@@ -175,9 +179,44 @@ def process_detection_blocks(labels_folder, classes_file_path, min_consecutive_f
 
 
     
+    """
+    ## Debugging
+    import matplotlib.pyplot as plt
+
+    # Extract frame IDs and labels from the original and corrected sequences
+    original_labels, original_frames = zip(*label_frame_pairs)
+    corrected_labels, corrected_frames = zip(*corrected_label_frame_pairs)
+
+    # Create the plot
+    plt.figure(figsize=(20, 6))  # Adjust the size for better visibility
+
+    # Plot original sequence
+    #plt.plot(original_frames, original_labels, color='red', alpha=0.7, label='Original Labels', marker='o', linestyle='-', markersize=2)
+
+    # Plot corrected sequence
+    plt.plot(corrected_frames, corrected_labels, color='green', alpha=0.7, label='Corrected Labels', marker='x', linestyle='-', markersize=2)
+
+    # Enhancements for better understanding
+    plt.title('Original vs. Corrected Label Sequences Over Time')
+    plt.xlabel('Frame ID')
+    plt.ylabel('Label')
+    plt.legend()
+
+    # Set the y-axis to show the label range
+    plt.ylim(0, 6)
+
+    # Show grid for better visibility
+    plt.grid(True)
+
+    # Display the plot
+    plt.show()
 
 
 
+    # The label_frame_pairs list now contains (label, frame_id) pairs for further processing.
+    """  
+
+# Call the function with example parameters
 if __name__ == '__main__':
     # Example usage
     labels_folder = 'H:/Mario/YOLOv7_postdetection/CNO_injection_548/labels'
@@ -195,40 +234,3 @@ if __name__ == '__main__':
                              withdraw_frames,
                              output_csv_path)
 
-
-"""
-## Debugging
-import matplotlib.pyplot as plt
-
-# Extract frame IDs and labels from the original and corrected sequences
-original_labels, original_frames = zip(*label_frame_pairs)
-corrected_labels, corrected_frames = zip(*corrected_label_frame_pairs)
-
-# Create the plot
-plt.figure(figsize=(20, 6))  # Adjust the size for better visibility
-
-# Plot original sequence
-#plt.plot(original_frames, original_labels, color='red', alpha=0.7, label='Original Labels', marker='o', linestyle='-', markersize=2)
-
-# Plot corrected sequence
-plt.plot(corrected_frames, corrected_labels, color='green', alpha=0.7, label='Corrected Labels', marker='x', linestyle='-', markersize=2)
-
-# Enhancements for better understanding
-plt.title('Original vs. Corrected Label Sequences Over Time')
-plt.xlabel('Frame ID')
-plt.ylabel('Label')
-plt.legend()
-
-# Set the y-axis to show the label range
-plt.ylim(0, 6)
-
-# Show grid for better visibility
-plt.grid(True)
-
-# Display the plot
-plt.show()
-
-
-
-# The label_frame_pairs list now contains (label, frame_id) pairs for further processing.
-"""
