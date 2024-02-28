@@ -45,7 +45,8 @@ def run_detection(video_name, project_folder,
         '--device', device,
         '--name', video_name,
         '--save-txt',
-        '--save-conf'
+        '--save-conf',
+        '--nosave' # Do not save the output video
     ]
 
     print('Running detection, be patient...')

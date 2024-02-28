@@ -48,6 +48,7 @@ def main():
     min_consecutive_frames = 12 # 12 works well ; frame_rate * 0.10  # 0.1 second worth of frames
     min_gap_between_blocks = frame_rate * 20  # 20 seconds worth of frames - 600 frames (at 30hz) works well
     withdraw_frames = int(frame_rate * 0.07)  # 70 ms before end of block
+    conf = 0.75 # Confidence for detection
 
     # Iterate through the videos in the provided folder
     for video_name in os.listdir(video_folder):
@@ -68,14 +69,15 @@ def main():
             output_csv_path = os.path.join(project_folder, 'blocks_with_withdrawal_frames.csv')
             
              
-            # Run detection on the video
+            # Run detection on the video§§§§§§§§§§§§§
             print(f"\n{'*'*50}\n")
             print(f"Running detection on {video_name}...")
             run_detection(video_name=video_name, 
                           source_path=video_folder, 
                           project_folder=project_folder,
                           weights=weights_file, 
-                          device='0')  # Add other parameters as needed
+                          device='0',
+                          conf=conf)  # Add other parameters as needed
 
             # Process the detection blocks
             print(f"Processing detection blocks for {video_name}...")
