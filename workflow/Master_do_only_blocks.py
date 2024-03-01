@@ -62,6 +62,12 @@ def main():
             
             # Define the folder containing the labels
             labels_folder = os.path.join(project_folder,video_name, 'labels')
+
+            # Check if the folder is empty
+            if not os.listdir(labels_folder):
+                print("Folder is empty")
+                continue
+                # Continue with your code here
             
             # Define the output CSV path
             output_csv_path = os.path.join(project_folder, 'blocks_with_withdrawal_frames_075.csv')
