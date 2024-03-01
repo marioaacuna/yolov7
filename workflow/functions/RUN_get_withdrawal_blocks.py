@@ -48,6 +48,10 @@ def process_detection_blocks(labels_folder, classes_file_path, min_consecutive_f
         for txt_file in text_files:
             frame_number = extract_frame_number(os.path.basename(txt_file))
             label = read_detections(txt_file, conf)
+            # Skip those frames that did not pass threshold and have None
+            if  label==None:
+                continue
+            
             label_frame_pairs.append((label, frame_number))
         return label_frame_pairs
 
@@ -106,7 +110,7 @@ def process_detection_blocks(labels_folder, classes_file_path, min_consecutive_f
 
 
 
-    def process_blocks(corrected_label_frame_pairs, min_consecutive_frames=12, withdraw_frames=1, min_gap_between_blocks=600, classes_file_path='classes.txt'):
+    def process_blocks(corrected_label_frame_pairs, min_consecutive_frames=12, withdraw_frames=1, min_gap_between_blocks=600, classes_file_path=r'H:\YOLO_v7_weights\classes.txt'):
         # Sort the list by frame number
         corrected_label_frame_pairs.sort(key=lambda pair: pair[1])
         
@@ -142,7 +146,6 @@ def process_detection_blocks(labels_folder, classes_file_path, min_consecutive_f
         with open(classes_file_path, 'r') as f:
             class_names = [line.strip() for line in f.readlines()]
 
-
         
         # Prepare output rows for CSV
         output_rows = []
@@ -163,7 +166,7 @@ def process_detection_blocks(labels_folder, classes_file_path, min_consecutive_f
     # Process the label-frame pairs
     print('Running process_files...%s' % labels_folder)
     label_frame_pairs = process_files(labels_folder, conf)
-
+    
     # Apply the correction for consecutive glitches
     corrected_label_frame_pairs = correct_consecutive_glitches_with_removal(label_frame_pairs, gap_threshold=min_gap_between_blocks)
 
